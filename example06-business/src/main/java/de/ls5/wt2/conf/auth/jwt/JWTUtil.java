@@ -15,6 +15,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import de.ls5.wt2.enums.UserRoleEnum;
 
 public class JWTUtil {
 
@@ -33,7 +34,9 @@ public class JWTUtil {
 
         // add a custom claim for admins
         if ("admin".equals(user)) {
-            builder.claim(ROLES_CLAIM, "admin");
+            builder.claim(ROLES_CLAIM, UserRoleEnum.ADMIN.code);
+        } else {
+            builder.claim(ROLES_CLAIM, UserRoleEnum.USER.code);
         }
 
         final JWTClaimsSet claimsSet = builder.build();

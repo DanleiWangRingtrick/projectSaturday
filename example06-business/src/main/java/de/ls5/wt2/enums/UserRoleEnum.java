@@ -6,21 +6,21 @@ package de.ls5.wt2.enums;
  */
 public enum UserRoleEnum {
 
-    ADMIN(1, "管理员"),
-    USER(2, "用户");
+    ADMIN("admin", "管理员"),
+    USER("user", "用户");
 
     /**
-     * 角色Id
+     * 角色编码
      */
-    public Integer id;
+    public String code;
 
     /**
      * 角色名称
      */
     public String name;
 
-    UserRoleEnum(Integer id, String name) {
-        this.id = id;
+    UserRoleEnum(String code, String name) {
+        this.code = code;
         this.name = name;
     }
 

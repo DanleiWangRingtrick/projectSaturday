@@ -48,10 +48,14 @@ public class JWTREST {
 
         // do some proper lookup
         final String user = credentials.getUsername();
-        final String pwd = credentials.getPassword();
-
-        if (!user.equals(pwd)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        final String password = credentials.getPassword();
+        Query usernameQuery = entityManager.createNativeQuery("SELECT u.id,u.username,u.password,u.role FROM DBUSERS u where u.username=  '" + user + "'", DBUsers.class);
+        List<DBUsers> userList = usernameQuery.getResultList();
+        if (userList.isEmpty()) {
+            return new ResponseEntity<>("用户名不存在！", HttpStatus.UNAUTHORIZED);
+        }
+        if (!userList.get(0).getPassword().equals(password)) {
+            return new ResponseEntity<>("密码错误！", HttpStatus.UNAUTHORIZED);
         }
 
         return ResponseEntity.ok(JWTUtil.createJWToken(credentials));
