@@ -9,6 +9,7 @@ import de.ls5.wt2.entity.DBTodos_;
 import de.ls5.wt2.entity.DBUsers;
 import de.ls5.wt2.entity.DBUsersNotesUnion;
 import de.ls5.wt2.enums.UserRoleEnum;
+import de.ls5.wt2.model.NoteIdDto;
 import de.ls5.wt2.model.UpdateUsernameOnVDto;
 import de.ls5.wt2.model.UserListVo;
 import io.swagger.annotations.Api;
@@ -127,6 +128,22 @@ public class JWTREST {
         Query updateNoteQuery = entityManager.createNativeQuery("update DBTODOS  set CONTENT  = '" + param.getContent() + "' ,HEADLINE ='" + param.getHeadline() + "' where id ='" + param.getId() + "'");
         updateNoteQuery.executeUpdate();
         return ResponseEntity.ok(param);
+    }
+
+    /**
+     * @Description: 删除笔记
+     * @Date: 2022/6/30
+     */
+    @PostMapping(path = "deleteNote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "POST", value = "删除笔记")
+    public ResponseEntity<Integer> deleteNote(@RequestBody NoteIdDto noteIdDto) {
+        Query deleteNoteQuery = entityManager.createNativeQuery("delete from DBTODOS  where id ='" + noteIdDto.getNoteId() + "'");
+        int i = deleteNoteQuery.executeUpdate();
+
+        Query deleteDBUsersNotesUnionQuery = entityManager.createNativeQuery("delete from DBUSERS_NOTES_UNION  where NOTE_ID ='" + noteIdDto.getNoteId() + "'");
+        deleteDBUsersNotesUnionQuery.executeUpdate();
+
+        return ResponseEntity.ok(i);
     }
 
 }
