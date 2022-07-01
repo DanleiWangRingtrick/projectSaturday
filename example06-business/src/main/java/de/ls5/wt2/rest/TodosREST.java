@@ -34,9 +34,6 @@ public class TodosREST {
     @GetMapping(path = "newest",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public DBTodos readNewestNews() {
-        Subject subject = SecurityUtils.getSubject();
-        String toString = subject.getPrincipal().toString();
-        System.out.println(">>>>>>>>>>>>>>>>>>getPrincipal:" + toString);
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 

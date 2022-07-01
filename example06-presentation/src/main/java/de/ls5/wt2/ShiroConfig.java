@@ -57,10 +57,10 @@ public class ShiroConfig {
         // configuration for JWT based authentication
         chainDefinition.put("/rest/auth/jwt/authenticate", "anon");
         chainDefinition.put("/rest/auth/jwt/addUser", "anon");
-        chainDefinition.put("/rest/auth/jwt/getUserList", "anon");
-        chainDefinition.put("/rest/auth/jwt/editNote", "anon");
-        chainDefinition.put("/rest/auth/jwt/deleteNote", "anon");
-        chainDefinition.put("/rest/auth/jwt/updateUsernameOn", "anon");
+//        chainDefinition.put("/rest/auth/jwt/getUserList", "anon");
+//        chainDefinition.put("/rest/auth/jwt/editNote", "anon");
+//        chainDefinition.put("/rest/auth/jwt/deleteNote", "anon");
+//        chainDefinition.put("/rest/auth/jwt/updateUsernameOn", "anon");
         chainDefinition.put("/rest/auth/jwt/**", "noSessionCreation, jwtFilter");
 
         // configuration for using session based authentication
