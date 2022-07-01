@@ -3,20 +3,13 @@ package de.ls5.wt2.auth;
 import com.nimbusds.jose.JOSEException;
 import de.ls5.wt2.conf.auth.jwt.JWTLoginData;
 import de.ls5.wt2.conf.auth.jwt.JWTUtil;
-import de.ls5.wt2.conf.auth.permission.ViewFirstFiveNewsItemsPermission;
 import de.ls5.wt2.entity.DBTodos;
-import de.ls5.wt2.entity.DBTodos_;
 import de.ls5.wt2.entity.DBUsers;
 import de.ls5.wt2.entity.DBUsersNotesUnion;
 import de.ls5.wt2.enums.UserRoleEnum;
-import de.ls5.wt2.model.NoteIdDto;
-import de.ls5.wt2.model.UpdateUsernameOnVDto;
-import de.ls5.wt2.model.UserListVo;
+import de.ls5.wt2.model.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.Permission;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,16 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Transactional
 @RestController
 @RequestMapping(path = "rest/auth/jwt")
-@Api(value = "WEB - AuthNewsREST", tags = "用户相关接口", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@Api(value = "WEB - AuthNewsREST", tags = "接口", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class JWTREST {
 
     @Autowired
@@ -68,10 +57,21 @@ public class JWTREST {
     @PostMapping(path = "addUser", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", value = "用户注册")
-    public String createUser(@RequestBody final DBUsers param) {
-        this.entityManager.persist(param);
-        param.setRole(UserRoleEnum.USER.name);
-        return param.getUsername();
+    public ResponseEntity<String> createUser(@RequestBody AddUserDto addUserDto) {
+
+        Query usernameQuery = entityManager.createNativeQuery("select u.username from DBUSERS u where u.username = '" + addUserDto.getUsername() + "' ");
+        List<String> usernameList = usernameQuery.getResultList();
+
+        if (!usernameList.isEmpty()) {
+            return new ResponseEntity<>("账户已存在！", HttpStatus.UNAUTHORIZED);
+        }
+
+        DBUsers dbUsers = new DBUsers();
+        dbUsers.setUsername(addUserDto.getUsername());
+        dbUsers.setPassword(addUserDto.getPassword());
+        dbUsers.setRole(UserRoleEnum.USER.name);
+        this.entityManager.persist(dbUsers);
+        return ResponseEntity.ok(addUserDto.getUsername());
     }
 
     /**
@@ -81,7 +81,7 @@ public class JWTREST {
     @GetMapping(path = "getUserList",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", value = "获取用户列表")
-    public ResponseEntity<UserListVo> getUserList(Long noteId) {
+    public ResponseEntity<UserListVo> getUserList(NoteIdDto noteIdDto) {
 
         // region 获取所有角色为用户的账号名称
         UserListVo userListVo = new UserListVo();
@@ -91,7 +91,7 @@ public class JWTREST {
         // endregion
 
         // region 获取所有角色为用户并且对当前笔记可见的账号名称
-        Query usernameOnQuery = entityManager.createNativeQuery("SELECT u.username FROM DBUSERS u where u.username in (select unu.username from DBUSERS_NOTES_UNION unu  where unu.note_id = '" + noteId + "' ) and u.role=  '" + UserRoleEnum.USER.name + "'");
+        Query usernameOnQuery = entityManager.createNativeQuery("SELECT u.username FROM DBUSERS u where u.username in (select unu.username from DBUSERS_NOTES_UNION unu  where unu.note_id = '" + noteIdDto.getNoteId() + "' ) and u.role=  '" + UserRoleEnum.USER.name + "'");
         List<String> usernameOn = usernameOnQuery.getResultList();
         userListVo.setUsernameOn(usernameOn);
         // endregion
@@ -109,15 +109,13 @@ public class JWTREST {
     public ResponseEntity<UpdateUsernameOnVDto> updateUsernameOn(@RequestBody UpdateUsernameOnVDto updateUsernameOnVDto) {
 
         Query usernameOnQuery = entityManager.createNativeQuery("delete from DBUSERS_NOTES_UNION  unu  where unu.NOTE_ID = '" + updateUsernameOnVDto.getNoteId() + "' ");
-        int i = usernameOnQuery.executeUpdate();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>executeUpdate:" + i);
+        usernameOnQuery.executeUpdate();
         for (String item : updateUsernameOnVDto.getUsernameOn()) {
             DBUsersNotesUnion dbUsersNotesUnion = new DBUsersNotesUnion();
             dbUsersNotesUnion.setUsername(item);
             dbUsersNotesUnion.setNoteId(updateUsernameOnVDto.getNoteId());
             this.entityManager.persist(dbUsersNotesUnion);
         }
-
         return ResponseEntity.ok(updateUsernameOnVDto);
     }
 
@@ -128,10 +126,14 @@ public class JWTREST {
     @PostMapping(path = "editNote", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", value = "编辑笔记")
-    public ResponseEntity<DBTodos> editNote(@RequestBody DBTodos param) {
-        Query updateNoteQuery = entityManager.createNativeQuery("update DBTODOS  set CONTENT  = '" + param.getContent() + "' ,HEADLINE ='" + param.getHeadline() + "' where id ='" + param.getId() + "'");
+    public ResponseEntity<DBTodos> editNote(@RequestBody EditNodeDto editNodeDto) {
+        DBTodos dbTodos = new DBTodos();
+        dbTodos.setId(editNodeDto.getId());
+        dbTodos.setHeadline(editNodeDto.getHeadline());
+        dbTodos.setContent(editNodeDto.getContent());
+        Query updateNoteQuery = entityManager.createNativeQuery("update DBTODOS  set CONTENT  = '" + editNodeDto.getContent() + "' ,HEADLINE ='" + editNodeDto.getHeadline() + "' where id ='" + editNodeDto.getId() + "'");
         updateNoteQuery.executeUpdate();
-        return ResponseEntity.ok(param);
+        return ResponseEntity.ok(dbTodos);
     }
 
     /**

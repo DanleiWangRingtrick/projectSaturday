@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional
 @RestController
 @RequestMapping(path = {"rest/auth/session/news", "rest/auth/basic/news", "rest/auth/jwt/news"})
-@Api(value = "WEB - AuthNewsREST", tags = "业务接口", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//@Api(value = "WEB - AuthNewsREST", tags = "业务接口", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AuthNewsREST {
 
     @Autowired
@@ -49,7 +49,7 @@ public class AuthNewsREST {
      * @Date: 2022/6/30
      */
     @GetMapping(path = "newest", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", value = "获取最新一条笔记")
+//    @ApiOperation(httpMethod = "POST", value = "获取最新一条笔记")
     public ResponseEntity<DBTodos> readNewestNews() {
 
         final Subject subject = SecurityUtils.getSubject();
@@ -100,7 +100,7 @@ public class AuthNewsREST {
      * @Date: 2022/6/30
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", value = "获取笔记列表")
+//    @ApiOperation(httpMethod = "GET", value = "获取笔记列表")
     public ResponseEntity<List<DBTodos>> readAllAsJSON() {
         final Subject subject = SecurityUtils.getSubject();
         if (subject == null || !subject.isAuthenticated()) {
@@ -132,7 +132,7 @@ public class AuthNewsREST {
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", value = "新增笔记")
+//    @ApiOperation(httpMethod = "POST", value = "新增笔记")
     public DBTodos create(@RequestBody final DBTodos param) {
 
         String username = SecurityUtils.getSubject().getPrincipal().toString();
