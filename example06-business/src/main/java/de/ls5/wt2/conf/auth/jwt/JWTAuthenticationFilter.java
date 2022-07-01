@@ -10,12 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nimbusds.jose.JWSObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
 
+@Slf4j
 public class JWTAuthenticationFilter extends AuthenticatingFilter {
 
     private final static String AUTHORIZATION = "Authorization";
@@ -24,12 +26,12 @@ public class JWTAuthenticationFilter extends AuthenticatingFilter {
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
 
         final HttpServletRequest httpRequest = WebUtils.toHttp(request);
-        final String authzHeader = httpRequest.getHeader(AUTHORIZATION);
+        final String authzHeader = httpRequest.getParameter(AUTHORIZATION);
 
         if (authzHeader != null && authzHeader.startsWith("Bearer ")) {
+            log.info("createToken:{}", authzHeader);
             return buildShiroToken(authzHeader.split(" ")[1]);
         }
-
         // return empty token, that will fail authentication
         return new UsernamePasswordToken();
     }

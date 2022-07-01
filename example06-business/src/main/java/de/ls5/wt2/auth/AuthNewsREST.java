@@ -57,7 +57,7 @@ public class AuthNewsREST {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         String username = subject.getPrincipal().toString();
-        Query queryRole = entityManager.createNativeQuery("select u.role from DBUsers u where u.username = '" + username + "'");
+        Query queryRole = entityManager.createNativeQuery("select u.role from DBUsers u where u.username = '" + username + "' order by u.id desc");
         String role = (String) queryRole.getSingleResult();
         //管理员可以看全部笔记
         if (UserRoleEnum.ADMIN.name.equals(role)) {

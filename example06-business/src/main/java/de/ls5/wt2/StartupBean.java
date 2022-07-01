@@ -34,7 +34,7 @@ public class StartupBean implements ApplicationListener<ContextRefreshedEvent> {
             admin.setRole("管理员");
             this.entityManager.persist(admin);
 
-            // region 初始化添加三个普通用户
+            // region 初始化添加两个普通用户
             final DBUsers user1 = new DBUsers();
             user1.setUsername("user1");
             user1.setPassword("user");
@@ -47,11 +47,6 @@ public class StartupBean implements ApplicationListener<ContextRefreshedEvent> {
             user2.setRole("用户");
             this.entityManager.persist(user2);
 
-            final DBUsers user3 = new DBUsers();
-            user3.setUsername("user3");
-            user3.setPassword("user");
-            user3.setRole("用户");
-            this.entityManager.persist(user3);
             // endregion
 
             // region 初始化创建一条用户user1可见的笔记
@@ -83,15 +78,15 @@ public class StartupBean implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         // only initialize once
-        if (firstNewsItem == null) {
-            final DBTodos news = new DBTodos();
-
-            news.setHeadline("Startup");
-            news.setContent("Startup Bean successfully executed");
-            news.setPublishedOn(new Date());
-
-            this.entityManager.persist(news);
-        }
+//        if (firstNewsItem == null) {
+//            final DBTodos news = new DBTodos();
+//
+//            news.setHeadline("Startup");
+//            news.setContent("Startup Bean successfully executed");
+//            news.setPublishedOn(new Date());
+//
+//            this.entityManager.persist(news);
+//        }
 
         Query query = entityManager.createNativeQuery("select u.password from DBUsers u where u.username = 'admin'");
         String result = (String) query.getSingleResult();
