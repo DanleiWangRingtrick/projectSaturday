@@ -12,14 +12,27 @@ export class JwtAuthService extends AuthService {
   login(username: string, password: string): Observable<boolean> {
     return this.http.post(`${this.getBaseUrl()}/authenticate`, {username, password}, {responseType: 'text'})
       .pipe(map(body => {
+        sessionStorage.setItem('token',body)
         this.token = body;
         return true;
       }));
   }
 
+  addUser(username: string, password: string): Observable<boolean> {
+    return this.http.post(`${this.getBaseUrl()}/addUser`, {username, password}, {responseType: 'text'})
+      .pipe(map(body => {
+        return true;
+      }));
+  }
+
   logout(): Observable<boolean> {
+    sessionStorage.setItem('token',null)
     this.token = null;
     return of(true);
+  }
+
+  getAuth(): string {
+    return this.token
   }
 
   getAuthHeaders(): HttpHeaders {
@@ -33,6 +46,7 @@ export class JwtAuthService extends AuthService {
   }
 
   get isLoggedIn(): boolean {
+    // token = sessionStorage.getItem('token')
     return this.token != null;
   }
 }

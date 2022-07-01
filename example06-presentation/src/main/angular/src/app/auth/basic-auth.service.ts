@@ -19,6 +19,14 @@ export class BasicAuthService extends AuthService {
           return true;
         }));
   }
+  
+  addUser(username: string, password: string): Observable<boolean> {
+    const token = btoa(unescape(encodeURIComponent(username + ':' + password)));
+    return this.http.head(`${this.getBaseUrl()}/addUser`, {headers: this.getAuthHeadersForToken(token), responseType: 'text'})
+        .pipe(map(body => {
+          return true;
+        }));
+  }
 
   logout(): Observable<boolean> {
     this.token = null;

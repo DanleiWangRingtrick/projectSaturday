@@ -47,7 +47,7 @@ public class ShiroConfig {
         filters.put("loginFilter", new FormAuthenticationFilterWithoutRedirect());
         filters.put("logoutFilter", new LogoutFilterWithoutRedirect());
         filters.put("jwtFilter", new JWTAuthenticationFilter());
-
+        shiroFilterFactoryBean.setFilters(filters);
 
         final Map<String, String> chainDefinition = new LinkedHashMap<>();
 
@@ -75,6 +75,7 @@ public class ShiroConfig {
 
         // make static Angular resources globally available
         chainDefinition.put("/**", "anon");
+
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(chainDefinition);
 

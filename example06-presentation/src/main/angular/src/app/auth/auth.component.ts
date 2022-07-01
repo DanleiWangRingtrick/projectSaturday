@@ -58,7 +58,8 @@ export class AuthComponent extends AngularComponent implements OnInit {
     if (e != null) e.preventDefault();
     this.authService = new BasicAuthService(this.http);
     this.authNewsService.authService = this.authService;
-    this.reloadQueryParameters('basic');
+    // this.reloadQueryParameters('basic');
+    this.reloadQueryParameters('jwt');
   }
 
   useJwtAuth(e?: Event) {

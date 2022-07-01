@@ -10,5 +10,9 @@
     <div class="flex-shrink-0">
       <small>{{n.publishedOn | date}}</small>
     </div>
+    <div class="flex-shrink-0" style="padding-left: 80px;">
+      <small (click)="doDelete(n)">delete</small>&nbsp;&nbsp;
+      <!-- <small (click)="doAssign(n)">assign</small> -->
+    </div>
   </div>
 </div>

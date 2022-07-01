@@ -23,6 +23,19 @@ export class SessionAuthService extends AuthService {
     );
   }
 
+  addUser(username: string, password: string): Observable<boolean> {
+    const body = new HttpParams()
+      .set('username', username)
+      .set('password', password);
+
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+    return this.http.post(`/adduser.jsp`, body.toString(), {headers, responseType: 'text'}).pipe(
+      map(() => {
+        return true;
+      })
+    );
+  }
+
   logout(): Observable<boolean> {
     return this.http.get(`/logout`).pipe(
       catchError(err => {

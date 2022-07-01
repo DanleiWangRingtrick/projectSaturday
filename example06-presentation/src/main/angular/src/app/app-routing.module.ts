@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'auth', component: AuthComponent},
   { path: 'security', component: SecurityComponent },
   { path: '',
-    redirectTo: '/angular',
+    redirectTo: '/auth', // change to  /angular
     pathMatch: 'full'
   }
 ];

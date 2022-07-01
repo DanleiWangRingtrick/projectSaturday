@@ -16,16 +16,26 @@ export class LoginComponent {
 
   public username: string = "";
   public password: string = "";
+  public isLogin: string = "1";
   public errorMessage: string;
+  
 
   login(e: Event) {
     e.preventDefault();
     this.errorMessage = null;
     if (this.canLogin) {
-      this.authService.login(this.username, this.password).subscribe({
-        next: () => this.loggedIn.emit(),
-        error: () => this.errorMessage = 'Failed to login'
-      });
+      if(this.isLogin==='1')
+      {
+        this.authService.login(this.username, this.password).subscribe({
+            next: () => this.loggedIn.emit(),
+            error: () => this.errorMessage = 'Failed to login'
+          });
+      }else{
+        this.authService.addUser(this.username, this.password).subscribe({
+          next: () => this.loggedIn.emit(),
+          error: () => this.errorMessage = 'Failed to register'
+        });
+      }
     }
   }
 
