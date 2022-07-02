@@ -8,8 +8,6 @@ import de.ls5.wt2.entity.DBUsers;
 import de.ls5.wt2.entity.DBUsersNotesUnion;
 import de.ls5.wt2.enums.UserRoleEnum;
 import de.ls5.wt2.model.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +22,7 @@ import java.util.List;
 @Transactional
 @RestController
 @RequestMapping(path = "rest/auth/jwt")
-@Api(value = "WEB - AuthNewsREST", tags = "接口", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//@Api(value = "WEB - AuthNewsREST", tags = "接口", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class JWTREST {
 
     @Autowired
@@ -32,7 +30,7 @@ public class JWTREST {
 
     @PostMapping(path = "authenticate",
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", value = "登录")
+//    @ApiOperation(httpMethod = "POST", value = "登录")
     public ResponseEntity<String> createJWToken(@RequestBody JWTLoginData credentials) throws JOSEException {
 
         // do some proper lookup
@@ -56,7 +54,7 @@ public class JWTREST {
      */
     @PostMapping(path = "addUser", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", value = "用户注册")
+//    @ApiOperation(httpMethod = "POST", value = "用户注册")
     public ResponseEntity<String> createUser(@RequestBody AddUserDto addUserDto) {
 
         Query usernameQuery = entityManager.createNativeQuery("select u.username from DBUSERS u where u.username = '" + addUserDto.getUsername() + "' ");
@@ -80,7 +78,7 @@ public class JWTREST {
      */
     @GetMapping(path = "getUserList",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", value = "获取用户列表")
+//    @ApiOperation(httpMethod = "GET", value = "获取用户列表")
     public ResponseEntity<UserListVo> getUserList(NoteIdDto noteIdDto) {
 
         // region 获取所有角色为用户的账号名称
@@ -105,7 +103,7 @@ public class JWTREST {
      */
     @PostMapping(path = "updateUsernameOn", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", value = "更新当前笔记可见用户")
+//    @ApiOperation(httpMethod = "POST", value = "更新当前笔记可见用户")
     public ResponseEntity<UpdateUsernameOnVDto> updateUsernameOn(@RequestBody UpdateUsernameOnVDto updateUsernameOnVDto) {
 
         Query usernameOnQuery = entityManager.createNativeQuery("delete from DBUSERS_NOTES_UNION  unu  where unu.NOTE_ID = '" + updateUsernameOnVDto.getNoteId() + "' ");
@@ -125,7 +123,7 @@ public class JWTREST {
      */
     @PostMapping(path = "editNote", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", value = "编辑笔记")
+//    @ApiOperation(httpMethod = "POST", value = "编辑笔记")
     public ResponseEntity<DBTodos> editNote(@RequestBody EditNodeDto editNodeDto) {
         DBTodos dbTodos = new DBTodos();
         dbTodos.setId(editNodeDto.getId());
@@ -141,7 +139,7 @@ public class JWTREST {
      * @Date: 2022/6/30
      */
     @PostMapping(path = "deleteNote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", value = "删除笔记")
+//    @ApiOperation(httpMethod = "POST", value = "删除笔记")
     public ResponseEntity<Integer> deleteNote(@RequestBody NoteIdDto noteIdDto) {
         Query deleteNoteQuery = entityManager.createNativeQuery("delete from DBTODOS  where id ='" + noteIdDto.getNoteId() + "'");
         int i = deleteNoteQuery.executeUpdate();

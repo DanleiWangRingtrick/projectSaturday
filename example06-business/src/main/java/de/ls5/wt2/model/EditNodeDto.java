@@ -1,18 +1,16 @@
 package de.ls5.wt2.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "编辑笔记入参模型")
+//@ApiModel(value = "编辑笔记入参模型")
 public class EditNodeDto {
 
-    @ApiModelProperty(value = "笔记主键", required = true)
+//    @ApiModelProperty(value = "笔记主键", required = true)
     private Long id;
 
-    @ApiModelProperty(value = "标题", required = true)
+//    @ApiModelProperty(value = "标题", required = true)
     private String headline;
 
-    @ApiModelProperty(value = "内容", required = true)
+//    @ApiModelProperty(value = "内容", required = true)
     private String content;
 
     public long getId() {

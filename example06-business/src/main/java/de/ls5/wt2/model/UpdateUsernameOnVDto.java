@@ -1,17 +1,15 @@
 package de.ls5.wt2.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
-@ApiModel(value = "更新当前笔记可见用户入参模型")
+//@ApiModel(value = "更新当前笔记可见用户入参模型")
 public class UpdateUsernameOnVDto {
 
-    @ApiModelProperty(value = "可见用户集合", required = true)
+//    @ApiModelProperty(value = "可见用户集合", required = true)
     private List<String> usernameOn;
 
-    @ApiModelProperty(value = "笔记主键", required = true)
+//    @ApiModelProperty(value = "笔记主键", required = true)
     private Long noteId;
 
     public Long getNoteId() {

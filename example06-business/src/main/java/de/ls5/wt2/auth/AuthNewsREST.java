@@ -17,8 +17,6 @@ import de.ls5.wt2.entity.DBTodos_;
 import de.ls5.wt2.entity.DBUsers;
 import de.ls5.wt2.entity.DBUsersNotesUnion;
 import de.ls5.wt2.enums.UserRoleEnum;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.subject.Subject;
