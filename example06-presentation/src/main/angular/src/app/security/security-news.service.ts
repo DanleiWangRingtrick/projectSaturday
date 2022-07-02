@@ -41,4 +41,8 @@ export class SecurityNewsService extends BaseNewsService {
   deleteNote(noteId: string): Observable<News> {
     return this.http.post<any>(`${env.apiUrl}/deleteNote`, {noteId}, {headers: this.defaultHeaders})
   }
+
+  updateUsernameOn(noteId: string,usernameOn:string[]): Observable<News> {
+    return this.http.post<any>(`${env.apiUrl}/updateUsernameOn`, {noteId,usernameOn}, {headers: this.defaultHeaders})
+  }
 }

@@ -21,6 +21,7 @@ export class AngularComponent implements OnInit {
   }
 
   load(): void {
+    console.log("update")
     this.newsService.getNewest().subscribe({
       next: news => this.latest = news,
       error: console.error

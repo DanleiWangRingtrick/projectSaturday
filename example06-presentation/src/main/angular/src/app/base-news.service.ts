@@ -20,5 +20,7 @@ export abstract class BaseNewsService {
   abstract create(headline: string, content: string): Observable<News>;
 
   abstract deleteNote(noteId: string): Observable<News>;
+
+  abstract updateUsernameOn(noteId: string,usernameOn:string[]): Observable<News>;
 }
 

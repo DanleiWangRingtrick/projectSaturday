@@ -12,7 +12,19 @@
     </div>
     <div class="flex-shrink-0" style="padding-left: 80px;">
       <small (click)="doDelete(n)">delete</small>&nbsp;&nbsp;
-      <!-- <small (click)="doAssign(n)">assign</small> -->
+      <small (click)="doEdit(n)">edit</small>&nbsp;&nbsp;
+      <small (click)="doAssign(n)">assign</small>
     </div>
   </div>
 </div>
+
+<div class="list-group" *ngIf="userList.length>0">
+  <div style="line-height: 30px;">User List</div>
+  <div class="list-group-item d-flex" >
+    <div *ngFor="let user of userList; let i = index">
+      <label><input type="checkbox" (click)="doCheck(user.key)" [checked]="user.status" [value]="user.key"> {{user.key}}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <div><button class="btn btn-outline-primary" (click)="doUpdate()">update</button></div>
+  </div>
+</div>
+

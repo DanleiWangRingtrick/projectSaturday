@@ -33,7 +33,8 @@ export class NewsService extends BaseNewsService {
   }
   
   getUserList(noteId: string): Observable<User> {
-    return this.http.get<any>(`${env.apiUrl}/getUserList?noteId=${noteId}`, {headers: this.defaultHeaders}).pipe(
+    var authorization = sessionStorage.getItem('token')
+    return this.http.get<any>(`${env.apiUrl}/auth/jwt/getUserList?Authorization=Bearer ${authorization}&noteId=${noteId}`, {headers: this.defaultHeaders}).pipe(
       map(body => User.fromObject(body))
     );
   }
@@ -41,6 +42,13 @@ export class NewsService extends BaseNewsService {
   deleteNote(noteId: string): Observable<News> {
     var authorization = sessionStorage.getItem('token')
     return this.http.post<any>(`${env.apiUrl}/auth/jwt/deleteNote?Authorization=Bearer ${authorization}`, {noteId}, {headers: this.defaultHeaders}).pipe(
+      map(body => News.fromObject(body))
+    );
+  }
+
+  updateUsernameOn(noteId: string,usernameOn:string[]): Observable<News> {
+    var authorization = sessionStorage.getItem('token')
+    return this.http.post<any>(`${env.apiUrl}/auth/jwt/updateUsernameOn?Authorization=Bearer ${authorization}`, {noteId,usernameOn}, {headers: this.defaultHeaders}).pipe(
       map(body => News.fromObject(body))
     );
   }

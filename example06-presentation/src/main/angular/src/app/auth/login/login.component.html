@@ -12,5 +12,6 @@
     <label class="form-label">Password</label>
     <input name="password" type="password" class="form-control" [(ngModel)]="password" required placeholder="Enter your password">
   </div>
-  <button class="btn w-50 btn-outline-primary" (click)="isLogin = '0'" [disabled]="!canLogin">register</button> <button class="btn w-50 btn-outline-primary" (click)="isLogin = '1'" [disabled]="!canLogin">Login</button>
+  <button class="btn w-50 btn-outline-primary" (click)="isLogin = '1'" [disabled]="!canLogin">Login</button>
+  <button class="btn w-50 btn-outline-primary" (click)="isLogin = '0'" [disabled]="!canLogin">register</button> 
 </form>

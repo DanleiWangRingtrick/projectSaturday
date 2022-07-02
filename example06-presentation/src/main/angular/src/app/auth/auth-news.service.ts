@@ -66,6 +66,14 @@ export class AuthNewsService extends BaseNewsService {
       map(body => News.fromObject(body))
     );
   }
+
+  updateUsernameOn(noteId: string,usernameOn:string[]): Observable<News> {
+    var authorization = sessionStorage.getItem('token')
+    return this.http.post<any>(`${this._authService.getBaseUrl()}/updateUsernameOn?Authorization=Bearer ${authorization}`, {noteId,usernameOn}).pipe(
+      map(body => News.fromObject(body))
+    );
+  }
+
   set authService(value: AuthService) {
     this._authService = value;
   }
