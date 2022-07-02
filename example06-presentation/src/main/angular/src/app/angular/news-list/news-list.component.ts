@@ -1,12 +1,11 @@
 import { Component, Input ,Output,EventEmitter } from '@angular/core';
-import { User } from 'src/app/User';
 import { News } from '../../news';
 import { NewsService } from '../news.service';
 export class CheckBox {
   key: '';
   status: boolean
 }
-@Component({ 
+@Component({
   selector: 'wt2-news-list',
   templateUrl: './news-list.component.html',
   styleUrls: ['./news-list.component.sass'],
@@ -27,12 +26,12 @@ export class NewsListComponent {
 
   public userList:CheckBox[]=[]
   public usernameOn:string[]=[]
-  
+
 
   get reversedNews(): News[] {
     return this.news.slice().reverse();
   }
-  
+
   doDelete(a): void {
     this.newsService.deleteNote(a.id).subscribe({
       next: () => {
